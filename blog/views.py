@@ -11,14 +11,14 @@ from django.core.paginator import Paginator
 def home(request):
     if request.method == 'POST':
         # Random User
-        users = Post.objects.all()
+        # users = Post.objects.all()
         # random_users = random.sample(set(users), 2)
         #SearchField
         page_obj = searched_item = request.POST['search']
         if searched_item != "" and searched_item is not None:
             page_obj = Post.objects.filter(content__contains=searched_item)  # Must be a field of model
         #Pagination
-        # per_page = request.GET.get("per_page", 2)
+        per_page = request.GET.get("per_page", 2)
         paginator = Paginator(page_obj, per_page)
         page_number = request.GET.get("page", 1)
         page_obj = paginator.get_page(page_number)
