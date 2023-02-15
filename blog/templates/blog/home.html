@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"">
+    <!-- Bootstrap CSS -->
+    <link rel=" stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!--Css styles-->
+  <link rel="stylesheet" href="{% static 'blog/styles.css' %}">
+  <link rel="shortcut icon" type="image/png" href="{% static 'blog/favicon.png' %}">
+
+  {% if title %}
+  <title>PyBlog - {{ title }} </title>
+  {% else %}
+  <title>PyBlog</title>
+  {% endif %}
+
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+      <div class="container">
+        <a class="navbar-brand mr-4" href="{% url 'blog:blog-home' %}"><img class="mb-1" style="width:18%; height:18%;" src="{% static 'blog/logo_nav.png' %}" alt="">PyBlog</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+          aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="{% url 'blog:blog-home' %}">Home</a>
+            <a class="nav-item nav-link" href="{% url 'blog:blog-about' %}">About</a>
+            <a class="nav-item nav-link" href="{% url 'blog:blog-contact' %}">Contact</a>
+            <!--SearchField-->
+            <form method="POST" class="form-inline ml-3">
+              {% csrf_token %}
+              <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            <!--End SearchField-->
+          </div>
+          <!-- Navbar Right Side -->
+          <div class="navbar-nav">
+            {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="{% url 'blog:post-create' %}">Post</a>
+            <a class="nav-item nav-link" href="{% url 'users:profile' %}">Profile</a>
+            <a class="nav-item nav-link" href="{% url 'users:logout' %}">Logout</a>
+            {% else %}
+            <a class="nav-item nav-link" href="{% url 'users:login' %}">Login</a>
+            <a class="nav-item nav-link" href="{% url 'users:register' %}">Register</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main role="main" class="container">
+    <div class="row">
+      <div class="col-md-8">
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- Start block-->
+        {% for post in page_obj %}
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <h6 style="color: #7FBCD2;" class="mr-2">
+                <a class="mr-2" href="{% url 'blog:user-posts' post.author.username %}">{{ post.author }}</a>
+              </h6>
+              <small class="text-muted">{{ post.date_posted }}</small>
+              <div>
+                <small class="text-muted"><a href="{{ post.author_link }}">Author's link</a></small>
+              </div>
+            </div>
+            <h2><a class="article-title" href="{% url 'blog:post-detail' post.id %}">{{ post.title }}</a></h2>
+            <p style="text-align: justify;" class="article-content">{{ post.content|truncatewords:20 }}
+              <a href="{% url 'blog:post-detail' post.id %}">Read more</a>
+            </p>
+          </div>
+        </article>
+        {% endfor %}
+        <!--EndBlock-->
+
+        <!-- Pagination code starts here -->
+        <div class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+          <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+          <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a
+            class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+        </div>
+
+        <!-- Pagination code end here -->
+
+        <!--Animated Background-->
+
+        <!--End Animated BG-->
+
+
+      </div>
+      <div class="col-md-4">
+        <div class="content-section">
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-light">Calanders</li>
+            <li class="list-group-item list-group-item-light">
+              <div>
+                <!--Dayspedia.com widget--><iframe width='245' height='165'
+                  style='padding:0!important;margin:0!important;border:none!important;background:none!important;background:transparent!important'
+                  marginheight='0' marginwidth='0' frameborder='0' scrolling='no' comment='/*defined*/'
+                  src='https://dayspedia.com/if/digit/?v=1&iframe=eyJ3LTEyIjp0cnVlLCJ3LTExIjp0cnVlLCJ3LTEzIjp0cnVlLCJ3LTE0IjpmYWxzZSwidy0xNSI6ZmFsc2UsInctMTEwIjpmYWxzZSwidy13aWR0aC0wIjp0cnVlLCJ3LXdpZHRoLTEiOmZhbHNlLCJ3LXdpZHRoLTIiOmZhbHNlLCJ3LTE2IjoiMjRweCIsInctMTkiOiI0OCIsInctMTciOiIxNiIsInctMjEiOnRydWUsImJnaW1hZ2UiOjIsImJnaW1hZ2VTZXQiOnRydWUsInctMjFjMCI6IiNmZmZmZmYiLCJ3LTAiOnRydWUsInctMyI6dHJ1ZSwidy0zYzAiOiIjMzQzNDM0Iiwidy0zYjAiOiIxIiwidy02IjoiIzM0MzQzNCIsInctMjAiOnRydWUsInctNCI6IiMwMDdkYmYiLCJ3LTE4IjpmYWxzZSwidy13aWR0aC0yYy0wIjoiMzAwIiwidy0xMTUiOmZhbHNlfQ==&lang=en&cityid=7952'></iframe><!--Dayspedia.com widget ENDS-->
+              </div>
+            </li>
+            <li class="list-group-item list-group-item-light">Random active authors</li>
+            {% for user in random_users %}
+            <li class="list-group-item list-group-item-light">
+              <article class="media content-section mb-1">
+                <img class="rounded-circle article-img" src="{{ user.author.profile.image.url }}">
+                <div class="media-body">
+                  <div class="article-metadata">
+                    <p class="mb-2">{{ user.author }}</p>
+                    <div>
+                      <small class="text-muted"><a href="{{ user.author_link }}">Author's link</a></small>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </li>
+            {% endfor %}
+          </ul>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <!--JS styles-->
+
+  <!-- <script src="{% static 'blog/index2.js' %}" type="text/javascript" charset="utf-8"></script> -->
+</body>
+
+<!-- Footer -->
+<footer style="background-color: #0A2647;" class="page-footer font-small mdb-color darken-3 pt-4">
+
+  <!-- Footer Elements -->
+  <div class="container">
+
+    <!--Grid row-->
+    <div class="row d-flex justify-content-center">
+
+      <!--Grid column-->
+      <div class="col-md-6">
+
+        <!-- Video -->
+        <div class="embed-responsive embed-responsive-16by9 mb-4">
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/YFmV_MRSD7M"
+            allowfullscreen></iframe>
+        </div>
+
+      </div>
+      <!--Grid column-->
+
+    </div>
+    <!--Grid row-->
+
+  </div>
+  <!-- Footer Elements -->
+
+  <!-- Copyright -->
+  <div style="background-color: black; color: aliceblue;" class="footer-copyright text-center py-3">© 2023 Copyright:
+    <a style="color:greenyellow;" href="https://scholar.google.com/citations?user=zO-nHd0AAAAJ&hl=en"> Pejman</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
+</html>
