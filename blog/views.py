@@ -12,7 +12,7 @@ def home(request):
     if request.method == 'POST':
         # Random User
         users = Post.objects.all()
-        # random_users = random.sample(set(users), 2)
+        random_users = random.sample(set(users), 2)
         #SearchField
         page_obj = searched_item = request.POST['search']
         if searched_item != "" and searched_item is not None:
@@ -25,14 +25,14 @@ def home(request):
 
         context = {
             'page_obj':page_obj,
-            'title':'Home'
-            # 'random_users': random_users
+            'title':'Home',
+            'random_users': random_users
         }
         return render(request, 'blog/home.html', context=context)
     
     posts = Post.objects.all().order_by('-date_posted')
     users = Post.objects.all()
-    # random_users = random.sample(set(users), 2)
+    random_users = random.sample(set(users), 2)
     #Pagination
     per_page = request.GET.get("per_page", 2)
     paginator = Paginator(posts, per_page)
@@ -41,8 +41,8 @@ def home(request):
 
     context={
         'page_obj':page_obj,
-        'title':'Home'
-        # 'random_users': random_users
+        'title':'Home',
+        'random_users': random_users
     }
     return render(request, 'blog/home.html', context=context)
 
