@@ -79,7 +79,7 @@
           <div class="media-body">
             <div class="article-metadata">
               <h6 style="color: #7FBCD2;" class="mr-2">
-                <a class="mr-2" href="{% url 'blog:user-posts' post.author.username %}">{{ post.author }}</a>
+                <a style="color: fuchsia;" class="mr-2" href="{% url 'blog:user-posts' post.author.username %}">{{ post.author }}</a>
               </h6>
               <small class="text-muted">{{ post.date_posted }}</small>
               <div>
@@ -136,11 +136,11 @@
                   src='https://dayspedia.com/if/digit/?v=1&iframe=eyJ3LTEyIjp0cnVlLCJ3LTExIjp0cnVlLCJ3LTEzIjp0cnVlLCJ3LTE0IjpmYWxzZSwidy0xNSI6ZmFsc2UsInctMTEwIjpmYWxzZSwidy13aWR0aC0wIjp0cnVlLCJ3LXdpZHRoLTEiOmZhbHNlLCJ3LXdpZHRoLTIiOmZhbHNlLCJ3LTE2IjoiMjRweCIsInctMTkiOiI0OCIsInctMTciOiIxNiIsInctMjEiOnRydWUsImJnaW1hZ2UiOjIsImJnaW1hZ2VTZXQiOnRydWUsInctMjFjMCI6IiNmZmZmZmYiLCJ3LTAiOnRydWUsInctMyI6dHJ1ZSwidy0zYzAiOiIjMzQzNDM0Iiwidy0zYjAiOiIxIiwidy02IjoiIzM0MzQzNCIsInctMjAiOnRydWUsInctNCI6IiMwMDdkYmYiLCJ3LTE4IjpmYWxzZSwidy13aWR0aC0yYy0wIjoiMzAwIiwidy0xMTUiOmZhbHNlfQ==&lang=en&cityid=7952'></iframe><!--Dayspedia.com widget ENDS-->
               </div>
             </li>
-            <!-- <li class="list-group-item list-group-item-light">Random active authors</li>
+            <li class="list-group-item list-group-item-light">Random active authors</li>
             {% for user in random_users %}
             <li class="list-group-item list-group-item-light">
               <article class="media content-section mb-1">
-                <img class="rounded-circle article-img" src="{{ user.author.profile.image.url }}">
+                <!-- <img class="rounded-circle article-img" src="{{ user.author.profile.image.url }}"> -->
                 <div class="media-body">
                   <div class="article-metadata">
                     <p class="mb-2">{{ user.author }}</p>
@@ -151,7 +151,7 @@
                 </div>
               </article>
             </li>
-            {% endfor %} -->
+            {% endfor %}
           </ul>
           </p>
         </div>
