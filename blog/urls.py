@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, UserPostListView
 
+from rest_framework.urlpatterns import format_suffix_patterns
+
 app_name = 'blog'
 
 urlpatterns = [
@@ -14,4 +16,7 @@ urlpatterns = [
     path('about/', views.about, name='blog-about'), # localhost:8000/about/
     path('contact/', views.contact, name='blog-contact'), # localhost:8000/contact/
     path('post/<str:username>/', UserPostListView.as_view(), name='user-posts'),
+    path('api/', views.post_api_list, name='post_api_list'),
 ]   
+
+urlpatterns = format_suffix_patterns(urlpatterns)

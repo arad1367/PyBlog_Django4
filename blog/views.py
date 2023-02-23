@@ -6,6 +6,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
+# Rest API
+from django.http import JsonResponse
+from .serializers import PostSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
 
 # Function based view (home)
 def home(request):
@@ -117,3 +124,17 @@ def about(request):
 
 def contact(request):
     return render(request, 'blog/contact.html')
+
+
+# Rest API
+@api_view(['GET', 'POST'])
+def post_api_list(request, format=None):
+    if request.method == 'GET':
+        posts = Post.objects.all()
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+    if request.method == 'POST':
+        data = {
+        'message': 'POST is just possible when you Login in your account'
+        }
+        return JsonResponse(data)

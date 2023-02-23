@@ -36,6 +36,7 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split("
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'blog',
     'users',
     'crispy_forms',
