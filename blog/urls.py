@@ -15,6 +15,7 @@ urlpatterns = [
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'), # localhost:8000/post/1/delete/
     path('about/', views.about, name='blog-about'), # localhost:8000/about/
     path('contact/', views.contact, name='blog-contact'), # localhost:8000/contact/
+    path('projects/', views.projects, name='blog-projects'),
     path('post/<str:username>/', UserPostListView.as_view(), name='user-posts'),
     path('api/', views.post_api_list, name='post_api_list'),
 ]   

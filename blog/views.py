@@ -13,6 +13,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+from django.contrib.auth.decorators import login_required
 
 # Function based view (home)
 def home(request):
@@ -120,6 +121,10 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def about(request):
     return render(request, 'blog/about.html')
+
+@login_required
+def projects(request):
+    return render(request, 'blog/projects.html')
 
 
 def contact(request):
