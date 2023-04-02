@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
 # Rest API
+# Rest
 from django.http import JsonResponse
 from .serializers import PostSerializer
 from rest_framework.decorators import api_view
