@@ -159,7 +159,7 @@ def crop_model(request):
         crop = Crop(Year=temp['Year'], Latitude=temp['Latitude'], Longitude=temp['Longitude'],
                         Crop=temp['Crop'], Acres=temp['Acres'], Measured=temp['Measured'])
         
-        crop.save()
+        # crop.save()
 
         testData = pd.DataFrame({'x':temp}).transpose(copy=True)
         testData = testData[['Year', 'Latitude', 'Longitude', 'Crop', 'Acres', 'Measured']]
@@ -189,7 +189,7 @@ def weather_model(request):
         weather = Weather(Year=temp['Year'], Latitude=temp['Latitude'], Longitude=temp['Longitude'],
                         tavg=temp['tavg'], tmin=temp['tmin'], tmax=temp['tmax'])
         
-        weather.save()
+        # weather.save()
 
         testData = pd.DataFrame({'x':temp}).transpose(copy=True)
         testData = testData[['Year', 'Latitude', 'Longitude', 'tavg', 'tmin', 'tmax']]
