@@ -1,0 +1,26 @@
+{% extends 'blog/base.html' %}
+{% block body %}
+
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#"></a>
+            <small class="text-muted"></small>
+            <div>
+                <small class="text-muted"><a href="#"></a></small>
+            </div>
+        </div>
+        <h3 class="text-center"> Choose a model and make prediction (weather and crop models related to Minnesota county)
+            <div>
+                <a href="{% url 'blog:crop_model' %}"><button class="btn btn-outline-success btn-lg mt-3" type="submit">Crop model</button></a>
+            </div>
+            <div>
+                <a href="{% url 'blog:weather_model' %}"><button class="btn btn-outline-primary btn-lg mt-3" type="submit">Weather model</button></a>
+            </div>
+        </h3>
+    </div>
+</article>
+<div class="text-center" id="app"></div>
+
+
+{% endblock body %}

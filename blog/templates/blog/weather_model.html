@@ -1,0 +1,89 @@
+{% extends 'blog/base.html' %}
+{% block body %}
+
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#"></a>
+            <small class="text-muted"></small>
+            <div>
+                <small class="text-muted"><a href="#"></a></small>
+            </div>
+        </div>
+
+        <div>
+            {% if weather_pred <= 0 %}
+            <h1 style="text-align: center; color: rgb(230, 84, 31); font-weight: bold;">The prdicted daily precipitation(prcp) total in mm is: {{weather_pred}}.</h1>
+            {% endif %}
+            {% if weather_pred > 0 %}
+            <h1 style="text-align: center; color: rgb(44, 23, 235); font-weight: bold;">The prdicted daily precipitation(prcp) total in mm is: {{weather_pred}}</h1>
+            {% endif %}
+        </div>
+
+        <h3 class="text-center"> The model predicts the daily precipitation(prcp) total in mm.
+        </h3>
+
+        <!--Crop form-->
+        <div class="content-section">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">
+                        Please check latitude and longitude (Minnesota county) <a
+                            href="https://www.latlong.net/"><b>here</b></a>.
+                    </legend>
+
+                    <div class="form-group">
+                        <label for="year">Year</label>
+                        <input type="number" class="form-control" id="year"
+                            placeholder="Integer number, for example: 2023" name="year" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="latitude">Latitude</label>
+                        <input type="number" step="any" class="form-control" id="latitude"
+                            placeholder="Float number, for example: 46.5714822" name="latitude" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="longitude">Longitude</label>
+                        <input type="number" step="any" class="form-control" id="longitude"
+                            placeholder="Float number, for example: -94.9606684" name="longitude" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="tavg">The average air temperature in °C</label>
+                        <input type="number" step="any" class="form-control" id="tavg"
+                            placeholder="Float number, for example: 18.5" name="tavg"
+                            required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="tmin">The minimum air temperature in °C</label>
+                        <input type="number" step="any" class="form-control" id="tmin"
+                            placeholder="Float number, for example: 5 or -5" name="tmin"
+                            required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="tmax">The maximum air temperature in °C</label>
+                        <input type="number" step="any" class="form-control" id="tmax"
+                            placeholder="Float number, for example: 23"
+                            name="tmax" required="required">
+                    </div>
+
+
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-primary" type="submit">Predict</button>
+                </div>
+            </form>
+            <div class="border-top pt-3">
+                <small class="text-muted ml-2">
+                    Do you need to make a crop prediction? <a class="ml-2"
+                        href="{% url 'blog:crop_model' %}">Crop prediction</a>
+                </small>
+            </div>
+        </div>
+        <!--End crop form-->
+
+    </div>
+</article>
+
+
+{% endblock body %}

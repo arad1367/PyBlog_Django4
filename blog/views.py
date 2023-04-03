@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Post
+from .models import Post, Crop, Weather
 import random
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -15,6 +15,20 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from django.contrib.auth.decorators import login_required
+
+import pandas as pd
+import pickle
+import joblib
+import sklearn
+from sklearn import linear_model
+import math
+import os
+
+
+# Load ML models
+model_crop_loaded = joblib.load('./MLmodels/agri_forest_com_django.pkl')
+model_weather_loaded = joblib.load('./MLmodels/W_LR_Model.pkl')
+
 
 # Function based view (home)
 def home(request):
@@ -126,6 +140,69 @@ def about(request):
 @login_required
 def projects(request):
     return render(request, 'blog/projects.html')
+
+@login_required
+def morgan_stanley(request):
+    return render(request, 'blog/morgan_stanley.html')
+
+@login_required
+def crop_model(request):
+    if request.method == 'POST':
+        temp={}
+        temp['Year'] = request.POST.get('year')
+        temp['Latitude'] = request.POST.get('latitude')
+        temp['Longitude'] = request.POST.get('longitude')
+        temp['Crop'] = request.POST.get('crop')
+        temp['Acres'] = request.POST.get('acres')
+        temp['Measured'] = request.POST.get('measure')
+
+        crop = Crop(Year=temp['Year'], Latitude=temp['Latitude'], Longitude=temp['Longitude'],
+                        Crop=temp['Crop'], Acres=temp['Acres'], Measured=temp['Measured'])
+        
+        crop.save()
+
+        testData = pd.DataFrame({'x':temp}).transpose(copy=True)
+        testData = testData[['Year', 'Latitude', 'Longitude', 'Crop', 'Acres', 'Measured']]
+        # print(testData)
+        # print(type(testData))
+
+        crop_pred = round(model_crop_loaded.predict(testData)[0], 2)
+
+        context = {
+            'crop_pred': crop_pred
+        }
+        return render(request, 'blog/crop_model.html', context=context)
+    return render(request, 'blog/crop_model.html')
+
+
+@login_required
+def weather_model(request):
+    if request.method == 'POST':
+        temp={}
+        temp['Year'] = request.POST.get('year')
+        temp['Latitude'] = request.POST.get('latitude')
+        temp['Longitude'] = request.POST.get('longitude')
+        temp['tavg'] = request.POST.get('tavg')
+        temp['tmin'] = request.POST.get('tmin')
+        temp['tmax'] = request.POST.get('tmax')
+
+        weather = Weather(Year=temp['Year'], Latitude=temp['Latitude'], Longitude=temp['Longitude'],
+                        tavg=temp['tavg'], tmin=temp['tmin'], tmax=temp['tmax'])
+        
+        weather.save()
+
+        testData = pd.DataFrame({'x':temp}).transpose(copy=True)
+        testData = testData[['Year', 'Latitude', 'Longitude', 'tavg', 'tmin', 'tmax']]
+        # print(testData)
+        # print(type(testData))
+
+        weather_pred = round(model_weather_loaded.predict(testData)[0], 1)
+
+        context = {
+            'weather_pred': weather_pred
+        }
+        return render(request, 'blog/weather_model.html', context=context)
+    return render(request, 'blog/weather_model.html')
 
 
 def contact(request):

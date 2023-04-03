@@ -1,0 +1,99 @@
+{% extends 'blog/base.html' %}
+{% block body %}
+
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#"></a>
+            <small class="text-muted"></small>
+            <div>
+                <small class="text-muted"><a href="#"></a></small>
+            </div>
+        </div>
+
+        <div>
+            {% if crop_pred <= 0 %}
+            <h1 style="text-align: center; color: rgb(230, 84, 31); font-weight: bold;">The prdicted yield amount is: {{crop_pred}}, It seems not good.</h1>
+            {% endif %}
+            {% if crop_pred > 0 %}
+            <h1 style="text-align: center; color: rgb(17, 92, 9); font-weight: bold;">The predicted yield amount is: {{crop_pred}}</h1>
+            {% endif %}
+        </div>
+
+        <h3 class="text-center"> The model predicts the amounts of yields (YIELD, MEASURED IN BU / ACRE)
+        </h3>
+        <div>
+            <h4 style="color: green;">We have 21 types of crops :</h3>
+                <p class="text-justify">
+                    0.BARLEY 1.BEANS, DRY EDIBLE, INCL CHICKPEAS 2.CANOLA 3.CORN
+                    4.CORN, GRAIN 5.CORN, SILAGE 6.FLAXSEED 7.HAY 8.HAY, (EXCL ALFALFA)
+                    9.HAY, ALFALFA 10.OATS 11.RYE 12.SOYBEANS 13.SUGARBEETS 14.SUNFLOWER
+                    15.SUNFLOWER, NON 16.SUNFLOWER, OIL TYPE 17.WHEAT
+                    18.WHEAT, SPRING, (EXCL DURUM) 19.WHEAT, SPRING, DURUM 20.'WHEAT, WINTER'
+                </p>
+        </div>
+
+        <!--Crop form-->
+        <div class="content-section">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">
+                        Please check latitude and longitude (Minnesota county) <a
+                            href="https://www.latlong.net/"><b>here</b></a>.
+                    </legend>
+
+                    <div class="form-group">
+                        <label for="year">Year</label>
+                        <input type="number" class="form-control" id="year"
+                            placeholder="Integer number, for example: 2023" name="year" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="latitude">Latitude</label>
+                        <input type="number" step="any" class="form-control" id="latitude"
+                            placeholder="Float number, for example: 46.5714822" name="latitude" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="longitude">Longitude</label>
+                        <input type="number" step="any" class="form-control" id="longitude"
+                            placeholder="Float number, for example: -94.9606684" name="longitude" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="crop">Crop</label>
+                        <input type="number" class="form-control" id="crop"
+                            placeholder="Integer number between 0 to 20, for example: 1" name="crop"
+                            required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="acres">Acres harvest</label>
+                        <input type="number" step="any" class="form-control" id="acres"
+                            placeholder="Integer number for acres harvest, for example: 3320" name="acres"
+                            required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="measure">Production, measure in BU</label>
+                        <input type="number" step="any" class="form-control" id="measure"
+                            placeholder="Integer number for production, measured in BU, for example: 22000"
+                            name="measure" required="required">
+                    </div>
+
+
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-success" type="submit">Predict</button>
+                </div>
+            </form>
+            <div class="border-top pt-3">
+                <small class="text-muted ml-2">
+                    Do you need to make a weather prediction? <a class="ml-2"
+                        href="{% url 'blog:weather_model' %}">Weather prediction</a>
+                </small>
+            </div>
+        </div>
+        <!--End crop form-->
+
+    </div>
+</article>
+
+
+{% endblock body %}
