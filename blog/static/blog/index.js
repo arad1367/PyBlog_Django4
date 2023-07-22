@@ -320,7 +320,7 @@ const Views = {
     return Layouts.messageWithButtons({
       content: `
         <h1>Hello,</h1>
-        <p>I'm Pejman.</p>
+        <p>I'm Pejman from GilTech Megoldások KTF.</p>
       `,
       btn: {
         text: "Let's start!"
@@ -331,7 +331,7 @@ const Views = {
   async intro2() {
     return Layouts.messageWithButtons({
       content: `
-        <h1>Contact with me?</h1>
+        <h1>Contact with us?</h1>
         <p>You have some options! Click on Contact Me at top of the page.</p>
       `,
       btn: {
@@ -344,8 +344,8 @@ const Views = {
     return Layouts.messageWithButtons({
       content: `
         <h1>Do you prefer LinkedIn?</h1>
-        <p>Search my name(Pejman Ebrahimi) in LinkedIn :)</p>
-        <p>Did you find me? :)</p>
+        <p>Go to about us page and click on company name :)</p>
+        <p>Did you find us? :)</p>
       `,
       btn: {
         text: 'What else?'
@@ -356,9 +356,9 @@ const Views = {
   async intro4() {
     return Layouts.messageWithButtons({
       content: `
-        <h1>Personal website?</h1>
-        <p>Visit my personal website.</p>
-        <p>https://personal-python-web.onrender.com</p>
+        <h1>Our official email?</h1>
+        <p>Feel free to send us your projects.</p>
+        <p>info@giltech-support.co.uk</p>
       `,
       btn: {
         text: "That's all."
